@@ -1,9 +1,8 @@
-use std::fmt;
+pub mod board_slot;
 
+use std::fmt;
 use board_slot::BoardSlot;
 use log::debug;
-
-pub mod board_slot;
 
 const BOARD_WIDTH: usize = 7;
 const BOARD_HEIGHT: usize = 6;
