@@ -1,6 +1,7 @@
 use board::board_slot::BoardSlot;
 use board::Board;
 mod board;
+mod test;
 
 fn main() {
     env_logger::init();

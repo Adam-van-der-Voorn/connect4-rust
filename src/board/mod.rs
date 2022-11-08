@@ -1,6 +1,6 @@
 pub mod board_slot;
 
-use std::fmt;
+use std::{fmt, panic};
 use board_slot::BoardSlot;
 use log::debug;
 
@@ -14,6 +14,9 @@ pub struct Board {
 impl Board {
     pub fn insert(&self, piece: BoardSlot, slot: usize) -> Result<Board, &'static str> {
         debug!("Board insert for slot {}", slot);
+        if slot >= BOARD_WIDTH {
+            panic!("Slot {} does not exist!", slot)
+        }
 
         for row in (0..BOARD_HEIGHT).rev() {
             let cell = self.grid[row][slot];
@@ -38,6 +41,7 @@ impl fmt::Display for Board {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut s: String = String::new();
         for row in self.grid {
+            s += "|";
             for cell in row {
                 s += cell.to_string().as_str();
                 s += "|"
