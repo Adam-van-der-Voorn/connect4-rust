@@ -1,7 +1,7 @@
 use std::fmt;
 use strum_macros::IntoStaticStr;
 
-#[derive(Copy, Clone, IntoStaticStr)]
+#[derive(Copy, Clone, IntoStaticStr, PartialEq, Debug)]
 pub enum BoardSlot {
     P1, P2, Empty
 }

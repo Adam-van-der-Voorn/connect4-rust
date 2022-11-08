@@ -1,33 +1,36 @@
 use std::fmt;
-use log::error;
-use strum_macros::IntoStaticStr;
 
-use crate::board::board_slot::BoardSlot;
+use board_slot::BoardSlot;
+use log::debug;
 
 pub mod board_slot;
-
-#[derive(Copy, Clone, IntoStaticStr)]
-pub enum Piece {
-    P1, P2
-}
 
 const BOARD_WIDTH: usize = 7;
 const BOARD_HEIGHT: usize = 6;
 
 pub struct Board {
-    grid: [[BoardSlot; BOARD_HEIGHT]; BOARD_WIDTH]
+    grid: [[BoardSlot; BOARD_WIDTH]; BOARD_HEIGHT]
 }
 
 impl Board {
-    pub fn insert(&self, piece: Piece, _slot: i32) -> Board {
-        let s2: &'static str = piece.into();
-        error!("How can I insert a peice into {} if I am unimplemented??", s2);
-        return Board::new();
+    pub fn insert(&self, piece: BoardSlot, slot: usize) -> Result<Board, &'static str> {
+        debug!("Board insert for slot {}", slot);
+
+        for row in (0..BOARD_HEIGHT).rev() {
+            let cell = self.grid[row][slot];
+            debug!("Board insert: considering cell {} at row={:?}.", cell, row);
+            if cell == BoardSlot::Empty {
+                let mut grid_clone = self.grid.clone();
+                grid_clone[row][slot] = piece;
+                return Ok(Board { grid: grid_clone })
+            }
+        }
+        return Err("Column is full!");
     }
 
     pub fn new() -> Board {
         Board {
-            grid: [[BoardSlot::Empty; BOARD_HEIGHT]; BOARD_WIDTH]
+            grid: [[BoardSlot::Empty; BOARD_WIDTH]; BOARD_HEIGHT]
         }
     }
 }
