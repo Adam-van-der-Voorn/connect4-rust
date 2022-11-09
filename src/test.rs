@@ -1,5 +1,7 @@
 #[cfg(test)]
 mod tests {
+    use crate::game::Game;
+    use crate::game::Player;
     use super::super::Board;
     use super::super::BoardSlot;
     use indoc::indoc;
@@ -15,10 +17,10 @@ mod tests {
         let expected = indoc! {"
         | | | | | | | |
         | | | | | | | |
-        | | |O| | | | |
-        | | |X| | | | |
-        | | |O| | | | |
-        |X| |O| | | | |
+        | | |1| | | | |
+        | | |2| | | | |
+        | | |1| | | | |
+        |2| |1| | | | |
         "};
 
         let mut board = Board::new();
@@ -34,12 +36,12 @@ mod tests {
     #[test]
     fn board_topping_out_1() {
         let expected = indoc! {"
-        | | |O| | | | |
-        | | |O| | | | |
-        | | |O| | | | |
-        | | |O| | | | |
-        | | |O| | | | |
-        | | |O| | | | |
+        | | |1| | | | |
+        | | |1| | | | |
+        | | |1| | | | |
+        | | |1| | | | |
+        | | |1| | | | |
+        | | |1| | | | |
         "};
 
         let mut board = Board::new();
@@ -56,5 +58,27 @@ mod tests {
     #[should_panic(expected="Slot 99 does not exist!")]
     fn board_invalid_slot() {
         Board::new().insert(BoardSlot::P1, 99).expect("unreachable");
+    }
+
+    // check that taking turns works
+    #[test]
+    fn game_1() {
+        let expected = indoc! {"
+        | | | | | | | |
+        | | | | | | | |
+        | | | | | | | |
+        | | | | | | | |
+        | | | | | | | |
+        |1|2|1|2|1|2| |
+        "};
+
+        let mut game: Game = Game::new(Player::One);
+
+        for i in 0..6 {
+            game.take_turn(i).expect("Bad code, moves should be valid.");
+        }
+
+        let actual = game.get_board().to_string();
+        assert_eq!(expected, actual, "\nExpected:\n{}Actual:\n{}", expected, actual)
     }
 }

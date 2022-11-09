@@ -10,8 +10,8 @@ impl fmt::Display for BoardSlot {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let token: char;
         match self {
-            &BoardSlot::P1 => token = 'O',
-            &BoardSlot::P2 => token = 'X',
+            &BoardSlot::P1 => token = '1',
+            &BoardSlot::P2 => token = '2',
             &BoardSlot::Empty => token = ' '
         }
         write!(f, "{}", token)
