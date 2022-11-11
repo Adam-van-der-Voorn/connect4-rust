@@ -4,8 +4,8 @@ use std::{fmt, panic};
 use board_slot::BoardSlot;
 use log::debug;
 
-const BOARD_WIDTH: usize = 7;
-const BOARD_HEIGHT: usize = 6;
+pub const BOARD_WIDTH: usize = 7;
+pub const BOARD_HEIGHT: usize = 6;
 
 pub struct Board {
     grid: [[BoardSlot; BOARD_WIDTH]; BOARD_HEIGHT]
