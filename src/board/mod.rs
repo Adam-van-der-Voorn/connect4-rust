@@ -1,4 +1,5 @@
 pub mod board_slot;
+pub mod line_iter;
 
 use std::{fmt, panic};
 use board_slot::BoardSlot;
