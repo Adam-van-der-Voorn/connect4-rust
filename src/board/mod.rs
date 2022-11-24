@@ -63,7 +63,7 @@ impl fmt::Display for Board {
                 s += cell.to_string().as_str();
                 s += "|"
             }
-            s += "\n";
+            s += "\r\n";
         }
         write!(f, "{}", s.as_str())
     }

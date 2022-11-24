@@ -84,6 +84,6 @@ impl fmt::Display for Game {
             + "V-"
             + &self.turn.to_string();
 
-        write!(f, "{}\n{}", cursor, self.board)
+        write!(f, "{}\r\n{}", cursor, self.board)
     }
 }
