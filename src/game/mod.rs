@@ -55,9 +55,11 @@ impl Game {
     }
 
     pub fn take_turn(&mut self) {
-        self.board = self.board.insert(self.turn.get_piece(), self.cursor_pos)
-            .expect("bad code, moves should be valid");
-        self.turn = self.turn.other();
+        let insertion_res = self.board.insert(self.turn.get_piece(), self.cursor_pos);
+        if let Some(new_board) = insertion_res.ok() {
+            self.board = new_board;
+            self.turn = self.turn.other();
+        }
     }
 
     pub fn move_cursor(&mut self, direction: Dir) {
