@@ -3,44 +3,41 @@ mod game;
 mod test;
 mod util;
 mod input;
+mod draw;
 
 extern crate crossterm;
 
 use crossterm::terminal::{self};
-use crossterm::{cursor, queue, execute};
+use crossterm::{execute, cursor};
+use draw::{init_draw, draw};
 use game::{Game, Player};
-use std::io::{Write, stdout};
+use std::io::{stdout};
 
 use crate::input::{do_move, is_quit};
 
 fn main() {
     let mut game = Game::new(Player::One);
 
-    terminal::enable_raw_mode().expect("should be able to enable raw mode, this is required to draw to the screen");
+    terminal::enable_raw_mode().expect("should be able to enable raw mode, this is required to get user input");
 
     let mut stdout = stdout();
     let _ = execute!(stdout, terminal::SetTitle("connect4"));
-    print!("{}", &game);
+    let _ = execute!(stdout, cursor::Hide);
 
-    loop {
+    init_draw(&mut stdout, &mut game);
+
+    let mut game_running = true;
+
+    while game_running {
         if let Some(key_event) = crossterm::event::read().ok() {
             do_move(&key_event, &mut game);
 
-            if is_quit(&key_event) {
-                break;
-            }
-        }
-        
-        queue!(stdout, cursor::MoveUp(7)).unwrap();
-        queue!(stdout, terminal::Clear(terminal::ClearType::FromCursorDown)).unwrap();
-        write!(stdout, "{}", &game).unwrap();
-        stdout.flush().unwrap();
+            game_running = !is_quit(&key_event) &&
+            game.check_winner().is_none();
 
-        if let Some(winner) = game.check_winner() {
-            println!("{} wins!", winner);
-            break;
+            draw(&mut stdout, &mut game);
         }
     }
-
+    
     terminal::disable_raw_mode().expect("should be able to disable raw mode");
 }
