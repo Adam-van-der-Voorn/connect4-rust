@@ -18,12 +18,12 @@ mod tests {
     #[test]
     fn board1() {
         let expected = indoc! {"
-        | | | | | | | |
-        | | | | | | | |
-        | | |1| | | | |
-        | | |2| | | | |
-        | | |1| | | | |
-        |2| |1| | | | |
+        .......
+        .......
+        ..1....
+        ..2....
+        ..1....
+        2.1....
         "};
 
         let mut board = Board::new();
@@ -32,7 +32,7 @@ mod tests {
         board = board.insert(BoardSlot::P1, 2).unwrap_or(board);
         board = board.insert(BoardSlot::P2, 2).unwrap_or(board);
         board = board.insert(BoardSlot::P1, 2).unwrap_or(board);
-        let actual = board.to_string();
+        let actual = format!("{:?}", board);
         assert_eq!(
             expected, actual,
             "\nExpected:\n{}Actual:\n{}",
@@ -43,12 +43,12 @@ mod tests {
     #[test]
     fn board_topping_out_1() {
         let expected = indoc! {"
-        | | |1| | | | |
-        | | |1| | | | |
-        | | |1| | | | |
-        | | |1| | | | |
-        | | |1| | | | |
-        | | |1| | | | |
+        ..1....
+        ..1....
+        ..1....
+        ..1....
+        ..1....
+        ..1....
         "};
 
         let mut board = Board::new();
@@ -56,7 +56,7 @@ mod tests {
             board = board.insert(BoardSlot::P1, 2).unwrap_or(board);
         }
 
-        let actual = board.to_string();
+        let actual = format!("{:?}", board);
         assert_eq!(
             expected, actual,
             "\nExpected:\n{}Actual:\n{}",
@@ -74,12 +74,12 @@ mod tests {
     #[test]
     fn game_1() {
         let expected = indoc! {"
-        | | | | | | | |
-        | | | | | | | |
-        | | | | | | | |
-        | | | | | | | |
-        | | | | | | | |
-        |1|2|1| |2|1|2|
+        .......
+        .......
+        .......
+        .......
+        .......
+        121.212
         "};
 
         let mut game: Game = Game::new(Player::One);
@@ -89,7 +89,7 @@ mod tests {
             game.take_turn();
         }
 
-        let actual = game.get_board().to_string();
+        let actual = format!("{:?}", game.get_board());
         assert_eq!(
             expected, actual,
             "\nExpected:\n{}Actual:\n{}",

@@ -3,7 +3,7 @@ use strum_macros::IntoStaticStr;
 
 use crate::game::Player;
 
-#[derive(Copy, Clone, IntoStaticStr, PartialEq, Debug)]
+#[derive(Copy, Clone, IntoStaticStr, PartialEq)]
 pub enum BoardSlot {
     P1, P2, Empty
 }
@@ -20,12 +20,22 @@ impl BoardSlot {
 
 impl fmt::Display for BoardSlot {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let token: char;
-        match self {
-            &BoardSlot::P1 => token = '1',
-            &BoardSlot::P2 => token = '2',
-            &BoardSlot::Empty => token = ' '
-        }
+        let token = match self {
+            &BoardSlot::P1 => '1',
+            &BoardSlot::P2 => '2',
+            &BoardSlot::Empty => ' '
+        };
+        write!(f, "{}", token)
+    }
+}
+
+impl fmt::Debug for BoardSlot {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let token = match self {
+            &BoardSlot::P1 => '1',
+            &BoardSlot::P2 => '2',
+            &BoardSlot::Empty => '.'
+        };
         write!(f, "{}", token)
     }
 }

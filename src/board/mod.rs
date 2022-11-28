@@ -68,3 +68,17 @@ impl fmt::Display for Board {
         write!(f, "{}", s.as_str())
     }
 }
+
+impl fmt::Debug for Board {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut s: String = String::new();
+        for row in self.grid {
+            for cell in row {
+                let cell = format!("{:?}", cell);
+                s.push_str(cell.as_str());
+            }
+            s += "\n";
+        }
+        write!(f, "{}", s.as_str())
+    }
+}
