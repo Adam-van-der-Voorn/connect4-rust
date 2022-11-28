@@ -3,27 +3,24 @@ mod game;
 mod test;
 mod input;
 mod draw;
+mod raw_mode;
 
 extern crate crossterm;
 
 use crossterm::terminal::{self};
-use crossterm::{execute, cursor};
+use crossterm::{execute};
 use draw::{init_draw, draw};
 use game::{Game, Player};
 use std::io::{stdout};
-
 use crate::input::{do_move, is_quit};
 
 fn main() {
     let mut game = Game::new(Player::One);
 
-    terminal::enable_raw_mode().expect("should be able to enable raw mode, this is required to get user input");
-
+    let _raw_mode_anchor = raw_mode::set_raw_mode();
     let mut stdout = stdout();
     let _ = execute!(stdout, terminal::SetTitle("connect4"));
-
     init_draw(&mut stdout, &mut game);
-
     let mut game_running = true;
 
     while game_running {
@@ -35,7 +32,6 @@ fn main() {
 
             draw(&mut stdout, &mut game);
         }
-    }
-    
-    terminal::disable_raw_mode().expect("should be able to disable raw mode");
+    }    
 }
+
