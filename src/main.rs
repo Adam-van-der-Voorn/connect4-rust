@@ -2,14 +2,16 @@ mod board;
 mod game;
 mod test;
 mod util;
+mod input;
 
 extern crate crossterm;
 
-use crossterm::event::{Event, KeyCode, KeyEvent, KeyModifiers};
 use crossterm::terminal::{self};
 use crossterm::{cursor, queue, execute};
-use game::{Game, Player, Dir};
+use game::{Game, Player};
 use std::io::{Write, stdout};
+
+use crate::input::{do_move, is_quit};
 
 fn main() {
     let mut game = Game::new(Player::One);
@@ -21,34 +23,14 @@ fn main() {
     print!("{}", &game);
 
     loop {
-        match crossterm::event::read().unwrap() {
-            Event::Key(KeyEvent {
-                code: KeyCode::Left,
-                modifiers: KeyModifiers::NONE,
-                ..
-            }) => game.move_cursor(Dir::Left),
-            Event::Key(KeyEvent {
-                code: KeyCode::Right,
-                modifiers: KeyModifiers::NONE,
-                ..
-            }) => game.move_cursor(Dir::Right),
-            Event::Key(KeyEvent {
-                code: KeyCode::Down,
-                modifiers: KeyModifiers::NONE,
-                ..
-            }) => game.take_turn(),
-            Event::Key(KeyEvent {
-                code: KeyCode::Char('q'),
-                modifiers: KeyModifiers::NONE,
-                ..
-            }) => break,
-            Event::Key(KeyEvent {
-                code: KeyCode::Char('c'),
-                modifiers: KeyModifiers::CONTROL,
-                ..
-            }) => break,
-            _ => (),
+        if let Some(key_event) = crossterm::event::read().ok() {
+            do_move(&key_event, &mut game);
+
+            if is_quit(&key_event) {
+                break;
+            }
         }
+        
         queue!(stdout, cursor::MoveUp(7)).unwrap();
         queue!(stdout, terminal::Clear(terminal::ClearType::FromCursorDown)).unwrap();
         write!(stdout, "{}", &game).unwrap();
