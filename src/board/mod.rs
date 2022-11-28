@@ -43,10 +43,6 @@ impl Board {
             .and_then(|row| row.get(_x))
     }
 
-    pub fn get_grid(&self) -> &[[BoardSlot; BOARD_WIDTH]; BOARD_HEIGHT] {
-        return &self.grid;
-    }
-
     pub fn new() -> Board {
         Board {
             grid: [[BoardSlot::Empty; BOARD_WIDTH]; BOARD_HEIGHT]

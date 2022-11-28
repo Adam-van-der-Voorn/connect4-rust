@@ -1,5 +1,6 @@
 #[cfg(test)]
 mod tests {
+    use crate::board::BOARD_WIDTH;
     use crate::board::board_slot::BoardSlot;
     use crate::board::Board;
     use crate::game::Dir;

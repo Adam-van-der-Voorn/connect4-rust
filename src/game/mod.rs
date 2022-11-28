@@ -2,7 +2,7 @@ pub mod check_winner;
 
 use std::fmt;
 
-use crate::board::{BOARD_WIDTH, BOARD_HEIGHT_SIGN, BOARD_WIDTH_SIGN, Board, board_slot::BoardSlot, line_iter::{BoardLineIter, BoardLineDir}};
+use crate::board::{BOARD_WIDTH, Board, board_slot::BoardSlot};
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum Player {
@@ -43,7 +43,6 @@ pub struct Game {
     turn: Player,
     cursor_pos: usize,
     board: Board,
-    winner: Option<Player>
 }
 
 impl Game {
@@ -52,7 +51,6 @@ impl Game {
             turn: starting_player,
             cursor_pos: 3,
             board: Board::new(),
-            winner: None
         }
     }
 
@@ -69,10 +67,12 @@ impl Game {
         };
     }
 
+    #[cfg(test)]
     pub fn set_cursor(&mut self, location: usize) {
         self.cursor_pos = location % BOARD_WIDTH;
     }
 
+    #[cfg(test)]
     pub fn get_board(&self) -> &Board {
         &self.board
     }

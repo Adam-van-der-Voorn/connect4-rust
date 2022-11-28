@@ -1,7 +1,6 @@
 mod board;
 mod game;
 mod test;
-mod util;
 mod input;
 mod draw;
 
