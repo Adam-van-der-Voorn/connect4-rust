@@ -21,7 +21,6 @@ fn main() {
 
     let mut stdout = stdout();
     let _ = execute!(stdout, terminal::SetTitle("connect4"));
-    let _ = execute!(stdout, cursor::Hide);
 
     init_draw(&mut stdout, &mut game);
 
